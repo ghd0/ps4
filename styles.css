@@ -1,0 +1,357 @@
+body {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Tajawal', sans-serif;
+    background-color: #1a1a1a;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 60px auto;
+    color: #d4af37;
+    text-shadow: 0 0 10px rgba(255, 217, 0, 0.562);
+    border: solid;
+    border-width: 3px;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 10px 20px;
+    line-height: 1.5;
+}
+
+button {
+    background: linear-gradient(45deg, #d8ad21, #dbc888); /* تدرج لوني */
+    background-color: #d4af37;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 1px, 1px;
+    border-radius: 25px; /* زوايا دائرية */
+    height: 50px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* ظل */
+}
+
+button:hover {
+    background-color: #e5c760;
+    transform: scale(1.05);
+}
+
+button:disabled {
+    background-color: #7f8c8d;
+    cursor: not-allowed;
+}
+
+.games-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+    padding: 20px;
+}
+
+/* تعريف animation لـ Fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px); /* يمكنك إزالة هذا السطر إذا كنت تريد فقط تأثير التلاشي بدون تحريك */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-card {
+    background-color: rgba(255, 255, 255, 0.1); /* خلفية شفافة */
+    border-radius: 15px; /* زوايا دائرية */
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    opacity: 0; /* إخفاء البطاقات في البداية */
+    animation: fadeIn 2s ease-in-out forwards; /* تطبيق animation */
+}
+
+.game-card {
+    animation-delay: calc(var(--index) * 0.1s); /* تأخير متدرج بناءً على ترتيب البطاقة */
+}
+
+.game-card:hover {
+    transform: scale(1.02);
+}
+
+.game-card img {
+    width: 100%;
+    height: auto;
+}
+
+.game-info {
+    padding: 15px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.game-info h3 {
+    margin: 0;
+    font-size: 25px;
+}
+
+.game-details {
+    margin: 10px 0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-price {
+    font-size: 25px;
+    color: #d4af37;
+}
+
+.add-to-cart {
+    background-color: #d4af37;
+    color: #1a1a1a;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+.cart-sidebar, .admin-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: #222;
+    transition: right 0.3s ease-in-out;
+    padding: 20px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.cart-header, .admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cart-items, .admin-form {
+    margin-top: 20px;
+}
+
+.cart-item {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.cart-item img {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+}
+
+.close-cart, .close-admin {
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.cart-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #d4af37;
+    color: #1a1a1a;
+    padding: 15px;
+    border: none;
+    border-radius: 25px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.cart-button:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+}
+
+.cart-button:hover {
+    background-color: #e74c3c;
+    transform: scale(1.05);
+}
+
+
+.added-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+
+.scroll-top {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    background-color: #d4af37;
+    color: #1a1a1a;
+    padding: 15px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    display: none;
+}
+
+.scroll-top.visible {
+    display: block;
+}
+
+.scroll-up, .scroll-down {
+    background-color: #e67e22;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.scroll-up.hidden, .scroll-down.hidden {
+    display: none;
+}
+
+/* للشاشات المتوسطة (بين 768px و 1024px) */
+@media (max-width: 1024px) {
+    body {
+        font-size: 14px;
+    }
+
+    .games-container {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .game-info {
+        font-size: 20px;
+    }
+
+    .game-info h3 {
+        font-size: 20px;
+    }
+
+    .game-price {
+        font-size: 20px;
+    }
+}
+
+/* للشاشات الصغيرة (أقل من 768px) */
+@media (max-width: 768px) {
+    body {
+        font-size: 12px;
+    }
+
+    .games-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .game-info {
+        font-size: 18px;
+    }
+
+    .game-info h3 {
+        font-size: 18px;
+    }
+
+    .game-price {
+        font-size: 18px;
+    }
+
+    .search-container {
+        top: 5px;
+        left: 5px;
+    }
+
+    #search-input {
+        width: 150px;
+        font-size: 14px;
+    }
+
+    .music-control {
+        top: 5px;
+        right: 5px;
+    }
+
+    #music-toggle, #about-button {
+        width: 40px;
+        height: 30px;
+        font-size: 18px;
+    }
+
+    #back-to-top {
+        width: 120px;
+        height: 30px;
+        font-size: 16px;
+    }
+}
+
+/* للهواتف الصغيرة جدًا (أقل من 480px) */
+@media (max-width: 480px) {
+    body {
+        font-size: 10px;
+    }
+
+    .games-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+
+    .game-info {
+        font-size: 16px;
+    }
+
+    .game-info h3 {
+        font-size: 16px;
+    }
+
+    .game-price {
+        font-size: 16px;
+    }
+
+    .search-container {
+        top: 2px;
+        left: 2px;
+    }
+
+    #search-input {
+        width: 120px;
+        font-size: 12px;
+    }
+
+    .music-control {
+        top: 2px;
+        right: 2px;
+    }
+
+    #music-toggle, #about-button {
+        width: 30px;
+        height: 25px;
+        font-size: 14px;
+    }
+
+    #back-to-top {
+        width: 100px;
+        height: 25px;
+        font-size: 14px;
+    }
+}

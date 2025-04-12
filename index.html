@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع كتالوج العاب PS4 | برمجة و تطوير : مهدي حسين</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @keyframes text-color-animation {
+            0% { color: gold; text-shadow: 0 0 10px rgba(255, 217, 0, 0.562); }
+            25% { color: #ff2600; text-shadow: 0 0 10px rgb(255, 38, 0); }
+            50% { color: #1e90ff; text-shadow: 0 0 10px rgba(30, 144, 255, 0.8); }
+            75% { color: #32cd32; text-shadow: 0 0 10px rgba(50, 205, 50, 0.8); }
+            100% { color: gold; text-shadow: 0 0 10px rgba(255, 217, 0, 0.562); }
+        }
+
+        .animated-header {
+            animation: text-color-animation 7s infinite;
+        }
+
+        .header-text {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 32px;
+            text-align: center;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #d4af37;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .image-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: auto;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .image-container img {
+            display: none;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .image-container.loaded img {
+            display: block;
+        }
+
+        .image-container.loaded .loader {
+            display: none;
+        }
+
+        .play-video {
+            position: absolute;
+            bottom: 5px;
+            left: 6px;
+            background-color: #d4af37;
+            color: rgb(0, 0, 0);
+            border: none;
+            width: 70px;
+            height: 20px;
+            border-radius: 5px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            line-height: 1.5;
+        }
+
+        .play-video:hover {
+            background-color: #e5c760;
+            transform: scale(1.05);
+        }
+
+        .game-card {
+            position: relative;
+        }
+
+        .search-container {
+            position: fixed;
+            top: 10px;
+            left: 5px;
+            z-index: 1000;
+        }
+
+        #search-input {
+            padding: 10px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 16px;
+            border: 2px solid #d4af37;
+            border-radius: 5px;
+            background-color: #1a1a1a;
+            color: rgb(255, 255, 255);
+            width: 200px;
+        }
+
+        #search-input::placeholder {
+            color: #d4af37;
+        }
+
+        .music-control {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+
+        #music-toggle, #about-button {
+            background-color: #ddb42f;
+            color: #1a1a1a;
+            border: none;
+            height: 40px;
+            width: 53px;
+            font-size: 24px;
+            border-radius: 30%; /* شكل دائري */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        #music-toggle:hover, #about-button:hover {
+            background: linear-gradient(45deg, #d4af37, #dbc888); /* تدرج لوني عند التحويم */
+            transform: scale(1.1); /* تكبير الزر */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #about-modal {
+            align-items: center;
+            justify-content: center;
+            display: none;
+            position: fixed;
+            font-size: 15px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background-color: #1a1a1a;
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+
+        #about-modal h2 {
+            margin-top: 0;
+        }
+
+        #about-modal button {
+            color: black;
+            background-color: #d4af37;
+            font-family: 'Tajawal', sans-serif;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        #about-modal button:hover {
+            background-color: #e74c3c;
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1500;
+        }
+
+        #back-to-top {
+            position: fixed;
+            right: 15px;
+            bottom: 15px;
+            background: linear-gradient(45deg, #d8ad21, #dbc888); /* تدرج لوني */
+            color: #000000;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            font-size: 1.1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            z-index: 90;
+        }
+
+        #back-to-top:hover {
+            background-color: #e5c760;
+            transform: scale(1.1);
+        }
+
+    </style>
+</head>
+<body>
+<br>
+<br>
+<br>
+    
+    <h1 class="animated-header header-text">PS4 موقع كتالوج العاب</h1>
+    
+
+    <div class="search-container">
+        <input type="text" id="search-input" placeholder="...البحث" />
+    </div>
+
+    <div id="games-container" class="games-container">
+
+    </div>
+
+    <div class="music-control">
+        <button id="music-toggle"><i class="fas fa-volume-mute"></i></button>
+        <button id="about-button">حول</button>
+        <div id="modal-overlay"></div>
+        <div id="about-modal">
+            <h2>عن الموقع</h2>
+            <p> هذا الموقع هو كتالوج مخصص لأستعراض العاب جهاز بلايستيشن 4 بطريقة أنيقة و منظمة. حيث يمكنك تصفح الالعاب. مشاهدة الصور. مشاهدة فيديوهات عن اللعبة. خاصية البحث. قراءة حجم اللعبة و سعرها </p>
+            <p>________________________________________________</p>
+            <br>
+            <p> برمجة و تطوير : مهدي حسين </p>
+            <p>جميع حقوق الطبع و النشر محفوظة© 2025 </p>
+            <p> Copyright© 2025 All Rights Reserved </p>
+            <button id="close-modal">إغلاق</button>
+        </div>
+    <audio id="background-music" loop>
+        <source src="Music.mp3" type="audio/mpeg">
+        المتصفح الخاص بك لا يدعم تشغيل الموسيقى.
+    </audio>
+
+    <button id="back-to-top">↑</button>
+
+    <script src="script.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const music = document.getElementById('background-music');
+        const musicToggle = document.getElementById('music-toggle');
+        const musicIcon = musicToggle.querySelector('i');
+        const aboutButton = document.getElementById('about-button');
+        const aboutModal = document.getElementById('about-modal');
+        const modalOverlay = document.getElementById('modal-overlay');
+        const closeModal = document.getElementById('close-modal');
+        const searchInput = document.getElementById('search-input');
+        const backToTopButton = document.getElementById('back-to-top');
+
+        let isPlaying = false;
+
+        musicToggle.addEventListener('click', () => {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.classList.remove('fa-volume-up');
+                musicIcon.classList.add('fa-volume-mute');
+            } else {
+                music.play();
+                musicIcon.classList.remove('fa-volume-mute');
+                musicIcon.classList.add('fa-volume-up');
+            }
+            isPlaying = !isPlaying;
+        });
+
+        aboutButton.addEventListener('click', () => {
+            aboutModal.style.display = 'block';
+            modalOverlay.style.display = 'block';
+        });
+
+        closeModal.addEventListener('click', () => {
+            aboutModal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+        });
+
+        modalOverlay.addEventListener('click', () => {
+            aboutModal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+        });
+
+        searchInput.addEventListener('input', filterGames);
+
+        window.onscroll = function() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                backToTopButton.style.display = "block";
+            } else {
+                backToTopButton.style.display = "none";
+            }
+        };
+
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        function filterGames() {
+            const searchQuery = searchInput.value.toLowerCase();
+            const filteredGames = games.filter(game => game.name.toLowerCase().startsWith(searchQuery));
+            renderGames(filteredGames);
+        }
+
+        function renderGames(gamesList) {
+            const container = document.getElementById('games-container');
+            container.innerHTML = gamesList.map(game => `
+                <div class="game-card">
+                    <div class="image-container">
+                        <div class="loader"></div>
+                        <img src="${game.image}" alt="${game.name}" onload="this.parentElement.classList.add('loaded')">
+                    </div>
+                    <div class="game-info">
+                        <h3>${game.name}</h3>
+                        <div class="game-details">
+                            <span>${game.size} GB</span><br>
+                            <span class="game-price"> ${game.price} د.ع</span>
+                        </div>
+                    </div>
+                    <button class="play-video" onclick="playVideo('${game.name}')">مشاهدة اللعبة</button>
+                </div>
+            `).join('');
+        }
+
+        function playVideo(gameName) {
+            const searchQuery = encodeURIComponent(`${gameName} gameplay`);
+            const youtubeUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+            window.open(youtubeUrl, '_blank');
+        }
+
+        renderGames(games);
+    });
+</script>
+
+<script>
+function renderGames(gamesList) {
+    const container = document.getElementById('games-container');
+    container.innerHTML = gamesList.map((game, index) => `
+        <div class="game-card" style="--index: ${index};">
+            <div class="image-container">
+                <div class="loader"></div>
+                <img src="${game.image}" alt="${game.name}" onload="this.parentElement.classList.add('loaded')">
+            </div>
+            <div class="game-info">
+                <h3>${game.name}</h3>
+                <div class="game-details">
+                    <span>${game.size} GB</span><br>
+                    <span class="game-price"> ${game.price} د.ع</span>
+                </div>
+            </div>
+            <button class="play-video" onclick="playVideo('${game.name}')">مشاهدة اللعبة</button>
+        </div>
+    `).join('');
+}
+
+    function playVideo(gameName) {
+        const searchQuery = encodeURIComponent(`${gameName} gameplay`);
+        const youtubeUrl = `https://www.youtube.com/results?search_query=${searchQuery}`;
+        window.open(youtubeUrl, '_blank');
+    }
+
+    document.addEventListener('DOMContentLoaded', renderGames);
+</script>
+
+</body>
+</html>
