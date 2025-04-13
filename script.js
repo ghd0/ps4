@@ -105,7 +105,7 @@ let games = [
     { name: "Watch Dogs 2", size: "39.3", price: 3000, image: "https://i.imgur.com/9YzSMXS.jpeg" },
     { name: "Watch Dogs Legion", size: "54.2", price: 3000, image: "https://i.imgur.com/F7K8E1g.jpeg" },
     { name: "WRC Generations", size: "42.6", price: 3000, image: "https://i.imgur.com/OkRBAUG.jpeg" },
-    { name: "WWE 2K 24", size: "71.1", price: 3000, image: "https://i.imgur.com/0X8Pr84.jpeg" },
+    { name: "WWE 2K 25", size: "82.6", price: 3000, image: "https://i.imgur.com/b69M6BF.jpeg" },
 
 ];
 
